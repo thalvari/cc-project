@@ -82,7 +82,7 @@ class MarkovChain(object):
                         continue
         self.directional = True
 
-    def generate(self, initial_state=None, width=256, height=256):
+    def generate(self, initial_state=None, width=64, height=64):
         if initial_state is None:
             initial_state = random.choice(list(self.weights.keys()))
         if type(initial_state) is not tuple and len(initial_state) != 3:

@@ -20,7 +20,7 @@ if __name__ == "__main__":
     style_img = Image.open(style_img_path)
     print("Training Markov model...")
     chain.train(style_img)
-    print("Generating Markov style...")
+    print("Generating markovified style...")
     style_img_markov = chain.generate()
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     style_img_markov.save(os.path.join(THIS_FOLDER, style_img_markov_path))

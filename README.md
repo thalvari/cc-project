@@ -21,15 +21,15 @@ Original content and style:
 
 Markovified styles:
 
-![](images/tmp/20190324-031430-798201.png)
-![](images/tmp/20190324-031516-377992.png)
-![](images/tmp/20190324-031541-139813.png)
+![](images/tmp/20190324-073518-671725.png)
+![](images/tmp/20190324-073542-402869.png)
+![](images/tmp/20190324-073607-852082.png)
 
 Artifacts:
 
-![](images/artifacts/golden_gate_sq_20190324-031430-798201_towers_1916_sq.jpg)
-![](images/artifacts/golden_gate_sq_20190324-031516-377992_towers_1916_sq.jpg)
-![](images/artifacts/golden_gate_sq_20190324-031541-139813_towers_1916_sq.jpg)
+![](images/artifacts/golden_gate_sq_20190324-073518-671725_towers_1916_sq.jpg)
+![](images/artifacts/golden_gate_sq_20190324-073542-402869_towers_1916_sq.jpg)
+![](images/artifacts/golden_gate_sq_20190324-073607-852082_towers_1916_sq.jpg)
 
 ### Example 2
 Original content and style:
@@ -39,12 +39,30 @@ Original content and style:
 
 Markovified styles:
 
-![](images/tmp/20190324-031607-964564.png)
-![](images/tmp/20190324-031633-196722.png)
-![](images/tmp/20190324-031746-101051.png)
+![](images/tmp/20190324-073848-671358.png)
+![](images/tmp/20190324-073920-251670.png)
+![](images/tmp/20190324-074001-187207.png)
 
 Artifacts:
 
-![](images/artifacts/colva_beach_sq_20190324-031607-964564_clouds-over-bor-1940_sq.jpg)
-![](images/artifacts/colva_beach_sq_20190324-031633-196722_clouds-over-bor-1940_sq.jpg)
-![](images/artifacts/colva_beach_sq_20190324-031746-101051_clouds-over-bor-1940_sq.jpg)
+![](images/artifacts/colva_beach_sq_20190324-073848-671358_clouds-over-bor-1940_sq.jpg)
+![](images/artifacts/colva_beach_sq_20190324-073920-251670_clouds-over-bor-1940_sq.jpg)
+![](images/artifacts/colva_beach_sq_20190324-074001-187207_clouds-over-bor-1940_sq.jpg)
+
+### Example 3
+Original content and style:
+
+![](images/content/statue_of_liberty_sq.jpg)
+![](images/styles/zigzag_colorful.jpg)
+
+Markovified styles:
+
+![](images/tmp/20190324-074313-533364.png)
+![](images/tmp/20190324-074333-436776.png)
+![](images/tmp/20190324-074354-362262.png)
+
+Artifacts:
+
+![](images/artifacts/statue_of_liberty_sq_20190324-074313-533364_zigzag_colorful.jpg)
+![](images/artifacts/statue_of_liberty_sq_20190324-074333-436776_zigzag_colorful.jpg)
+![](images/artifacts/statue_of_liberty_sq_20190324-074354-362262_zigzag_colorful.jpg)
