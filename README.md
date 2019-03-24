@@ -13,56 +13,21 @@
 ### Usage
 * ```python run.py [PATH_TO_CONTENT_IMG] [PATH_TO_STYLE_IMG]```
 
-### Example 1
-Original content and style:
+### Examples
+Original content, style and generated artifacts:
 
 ![](images/content/golden_gate_sq.jpg)
 ![](images/styles/towers_1916_sq.jpg)
-
-Markovified styles:
-
-![](images/tmp/20190324-073518-671725.png)
-![](images/tmp/20190324-073542-402869.png)
-![](images/tmp/20190324-073607-852082.png)
-
-Artifacts:
-
-![](images/artifacts/golden_gate_sq_20190324-073518-671725_towers_1916_sq.jpg)
-![](images/artifacts/golden_gate_sq_20190324-073542-402869_towers_1916_sq.jpg)
-![](images/artifacts/golden_gate_sq_20190324-073607-852082_towers_1916_sq.jpg)
-
-### Example 2
-Original content and style:
+![](gifs/3.gif)
 
 ![](images/content/colva_beach_sq.jpg)
 ![](images/styles/clouds-over-bor-1940_sq.jpg)
-
-Markovified styles:
-
-![](images/tmp/20190324-073848-671358.png)
-![](images/tmp/20190324-073920-251670.png)
-![](images/tmp/20190324-074001-187207.png)
-
-Artifacts:
-
-![](images/artifacts/colva_beach_sq_20190324-073848-671358_clouds-over-bor-1940_sq.jpg)
-![](images/artifacts/colva_beach_sq_20190324-073920-251670_clouds-over-bor-1940_sq.jpg)
-![](images/artifacts/colva_beach_sq_20190324-074001-187207_clouds-over-bor-1940_sq.jpg)
-
-### Example 3
-Original content and style:
+![](gifs/1.gif)
 
 ![](images/content/statue_of_liberty_sq.jpg)
 ![](images/styles/zigzag_colorful.jpg)
+![](gifs/4.gif)
 
-Markovified styles:
-
-![](images/tmp/20190324-074313-533364.png)
-![](images/tmp/20190324-074333-436776.png)
-![](images/tmp/20190324-074354-362262.png)
-
-Artifacts:
-
-![](images/artifacts/statue_of_liberty_sq_20190324-074313-533364_zigzag_colorful.jpg)
-![](images/artifacts/statue_of_liberty_sq_20190324-074333-436776_zigzag_colorful.jpg)
-![](images/artifacts/statue_of_liberty_sq_20190324-074354-362262_zigzag_colorful.jpg)
+![](images/content/eiffel_tower.jpg)
+![](images/styles/red_texture_sq.jpg)
+![](gifs/2.gif)

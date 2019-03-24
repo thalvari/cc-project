@@ -29,7 +29,7 @@ if __name__ == "__main__":
     console_entry_point([
         "arbitrary_image_stylization_with_weights",
         "--checkpoint",
-        "magenta/models/arbitrary_image_stylization/model/model.ckpt",
+        "pre-trained_models/arbitrary_style_transfer/model.ckpt",
         "--output_dir",
         "images/tmp/",
         "--style_images_paths",
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     console_entry_point([
         "arbitrary_image_stylization_with_weights",
         "--checkpoint",
-        "magenta/models/arbitrary_image_stylization/model/model.ckpt",
+        "pre-trained_models/arbitrary_style_transfer/model.ckpt",
         "--output_dir",
         "images/artifacts/",
         "--style_images_paths",
