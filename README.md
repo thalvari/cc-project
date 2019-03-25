@@ -1,4 +1,4 @@
-# cc-project
+# Group Picasso
 
 ### Installation for Ubuntu
 * ```curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash```
@@ -35,3 +35,7 @@ Original content, style, markovified styles and generated artifacts:
 ![](images/styles/red_texture_sq.jpg)
 ![](gifs/m4.gif)
 ![](gifs/a4.gif)
+
+### References
+* [markov-img-gen](https://github.com/JonnoFTW/markov-img-gen)
+* [Magenta](https://github.com/tensorflow/magenta)

@@ -21,10 +21,10 @@ from __future__ import print_function
 import ast
 import os
 
-from magenta.models.image_stylization import image_utils
-from magenta.models.image_stylization import learning
-from magenta.models.image_stylization import model
-from magenta.models.image_stylization import vgg
+from libs.image_stylization import image_utils
+from libs.image_stylization import learning
+from libs.image_stylization import model
+from libs.image_stylization import vgg
 import tensorflow as tf
 
 slim = tf.contrib.slim

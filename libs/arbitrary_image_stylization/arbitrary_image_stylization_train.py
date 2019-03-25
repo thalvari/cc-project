@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Distills a trained style prediction network using a MobileNetV2.
+"""Trains a real-time arbitrary image stylization model.
+
+For example of usage see start_training_locally.sh and start_training_on_borg.sh
 """
 from __future__ import absolute_import
 from __future__ import division
@@ -21,9 +23,9 @@ from __future__ import print_function
 import ast
 import os
 
-from magenta.models.arbitrary_image_stylization import arbitrary_image_stylization_build_mobilenet_model as build_mobilenet_model
-from magenta.models.arbitrary_image_stylization import arbitrary_image_stylization_build_model as build_model
-from magenta.models.image_stylization import image_utils
+from libs.arbitrary_image_stylization import arbitrary_image_stylization_build_model as build_model
+from libs.image_stylization import image_utils
+from libs.image_stylization import vgg
 import tensorflow as tf
 
 slim = tf.contrib.slim
@@ -42,13 +44,12 @@ flags.DEFINE_string('style_weights', DEFAULT_STYLE_WEIGHTS, 'Style weights')
 flags.DEFINE_integer('batch_size', 8, 'Batch size.')
 flags.DEFINE_integer('image_size', 256, 'Image size.')
 flags.DEFINE_boolean('random_style_image_size', True,
-                     'Whether to resize the style images '
-                     'to a random size or not.')
+                     'Wheather to augment style images or not.')
 flags.DEFINE_boolean(
     'augment_style_images', True,
-    'Whether to augment style images or not.')
+    'Wheather to resize the style images to a random size or not.')
 flags.DEFINE_boolean('center_crop', False,
-                     'Whether to center crop the style images.')
+                     'Wheather to center crop the style images.')
 flags.DEFINE_integer('ps_tasks', 0,
                      'Number of parameter servers. If 0, parameters '
                      'are handled locally by the worker.')
@@ -63,15 +64,8 @@ flags.DEFINE_string('master', '', 'BNS name of the TensorFlow master to use.')
 flags.DEFINE_string('style_dataset_file', None, 'Style dataset file.')
 flags.DEFINE_string('train_dir', None,
                     'Directory for checkpoints and summaries.')
-flags.DEFINE_string('initial_checkpoint', None,
-                    'Path to the pre-trained arbitrary_image_stylization '
-                    'checkpoint')
-flags.DEFINE_string('mobilenet_checkpoint', 'mobilenet_v2_1.0_224.ckpt',
-                    'Path to the pre-trained mobilenet checkpoint')
-flags.DEFINE_boolean('use_true_loss', False,
-                     'Add true style loss term based on VGG.')
-flags.DEFINE_float('true_loss_weight', 1e-9,
-                   'Scale factor for real loss')
+flags.DEFINE_string('inception_v3_checkpoint', None,
+                    'Path to the pre-trained inception_v3 checkpoint.')
 
 FLAGS = flags.FLAGS
 
@@ -84,7 +78,7 @@ def main(unused_argv=None):
     device = '/cpu:0' if not FLAGS.ps_tasks else '/job:worker/cpu:0'
     with tf.device(
         tf.train.replica_device_setter(FLAGS.ps_tasks, worker_device=device)):
-      # Load content images
+      # Loads content images.
       content_inputs_, _ = image_utils.imagenet_inputs(FLAGS.batch_size,
                                                        FLAGS.image_size)
 
@@ -105,75 +99,54 @@ def main(unused_argv=None):
       style_weights = ast.literal_eval(FLAGS.style_weights)
 
       # Define the model
-      stylized_images, \
-      true_loss, \
-      _, \
-      bottleneck_feat = build_mobilenet_model.build_mobilenet_model(
+      stylized_images, total_loss, loss_dict, _ = build_model.build_model(
           content_inputs_,
           style_inputs_,
-          mobilenet_trainable=True,
-          style_params_trainable=False,
+          trainable=True,
+          is_training=True,
+          inception_end_point='Mixed_6e',
           style_prediction_bottleneck=100,
           adds_losses=True,
           content_weights=content_weights,
           style_weights=style_weights,
-          total_variation_weight=FLAGS.total_variation_weight,
-      )
+          total_variation_weight=FLAGS.total_variation_weight)
 
-      _, inception_bottleneck_feat = build_model.style_prediction(
-          style_inputs_,
-          [],
-          [],
-          is_training=False,
-          trainable=False,
-          inception_end_point='Mixed_6e',
-          style_prediction_bottleneck=100,
-          reuse=None,
-      )
+      # Adding scalar summaries to the tensorboard.
+      for key, value in loss_dict.iteritems():
+        tf.summary.scalar(key, value)
 
-      print('PRINTING TRAINABLE VARIABLES')
-      for x in tf.trainable_variables():
-        print(x)
-
-      mse_loss = tf.losses.mean_squared_error(
-          inception_bottleneck_feat, bottleneck_feat)
-      total_loss = mse_loss
-      if FLAGS.use_true_loss:
-        true_loss = FLAGS.true_loss_weight*true_loss
-        total_loss += true_loss
-
-      if FLAGS.use_true_loss:
-        tf.summary.scalar('mse', mse_loss)
-        tf.summary.scalar('true_loss', true_loss)
-      tf.summary.scalar('total_loss', total_loss)
+      # Adding Image summaries to the tensorboard.
       tf.summary.image('image/0_content_inputs', content_inputs_, 3)
       tf.summary.image('image/1_style_inputs_orig', style_inputs_orig_, 3)
       tf.summary.image('image/2_style_inputs_aug', style_inputs_, 3)
       tf.summary.image('image/3_stylized_images', stylized_images, 3)
 
-      mobilenet_variables_to_restore = slim.get_variables_to_restore(
-          include=['MobilenetV2'],
-          exclude=['global_step'])
-
+      # Set up training
       optimizer = tf.train.AdamOptimizer(FLAGS.learning_rate)
       train_op = slim.learning.create_train_op(
           total_loss,
           optimizer,
           clip_gradient_norm=FLAGS.clip_gradient_norm,
-          summarize_gradients=False
-      )
+          summarize_gradients=False)
 
-      init_fn = slim.assign_from_checkpoint_fn(
-          FLAGS.initial_checkpoint,
-          slim.get_variables_to_restore(
-              exclude=['MobilenetV2', 'mobilenet_conv', 'global_step']))
-      init_pretrained_mobilenet = slim.assign_from_checkpoint_fn(
-          FLAGS.mobilenet_checkpoint, mobilenet_variables_to_restore)
+      # Function to restore VGG16 parameters.
+      init_fn_vgg = slim.assign_from_checkpoint_fn(vgg.checkpoint_file(),
+                                                   slim.get_variables('vgg_16'))
 
+      # Function to restore Inception_v3 parameters.
+      inception_variables_dict = {
+          var.op.name: var
+          for var in slim.get_model_variables('InceptionV3')
+      }
+      init_fn_inception = slim.assign_from_checkpoint_fn(
+          FLAGS.inception_v3_checkpoint, inception_variables_dict)
+
+      # Function to restore VGG16 and Inception_v3 parameters.
       def init_sub_networks(session):
-        init_fn(session)
-        init_pretrained_mobilenet(session)
+        init_fn_vgg(session)
+        init_fn_inception(session)
 
+      # Run training
       slim.learning.train(
           train_op=train_op,
           logdir=os.path.expanduser(FLAGS.train_dir),

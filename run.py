@@ -4,8 +4,8 @@ from datetime import datetime
 
 from PIL import Image
 
-from magenta.models.arbitrary_image_stylization.arbitrary_image_stylization_with_weights import console_entry_point
-from markov_img_gen.imggen import MarkovChain
+from libs.arbitrary_image_stylization.arbitrary_image_stylization_with_weights import console_entry_point
+from libs.markov_img_gen.imggen import MarkovChain
 
 if __name__ == "__main__":
     chain = MarkovChain(bucket_size=1)

@@ -27,8 +27,8 @@ from __future__ import print_function
 import io
 import os
 
-from magenta.models.image_stylization import image_utils
-from magenta.models.image_stylization import learning
+from libs.image_stylization import image_utils
+from libs.image_stylization import learning
 import scipy
 import tensorflow as tf
 

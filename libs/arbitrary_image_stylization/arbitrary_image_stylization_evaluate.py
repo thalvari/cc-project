@@ -22,8 +22,8 @@ from __future__ import print_function
 
 import ast
 
-from magenta.models.arbitrary_image_stylization import arbitrary_image_stylization_build_model as build_model
-from magenta.models.image_stylization import image_utils
+from libs.arbitrary_image_stylization import arbitrary_image_stylization_build_model as build_model
+from libs.image_stylization import image_utils
 import tensorflow as tf
 
 slim = tf.contrib.slim

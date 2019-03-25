@@ -22,7 +22,7 @@ import io
 import os
 import tempfile
 
-from magenta.models.image_stylization import imagenet_data
+from libs.image_stylization import imagenet_data
 import numpy as np
 import scipy
 import scipy.misc
