@@ -5,10 +5,10 @@ from datetime import datetime
 from PIL import Image
 
 from magenta.models.arbitrary_image_stylization.arbitrary_image_stylization_with_weights import console_entry_point
-from markov import MarkovChain
+from markov_img_gen.imggen import MarkovChain
 
 if __name__ == "__main__":
-    chain = MarkovChain(bucket_size=16, four_neighbour=True)
+    chain = MarkovChain(bucket_size=1)
     content_img_path = sys.argv[1]
     style_img_path = sys.argv[2]
     content_img_name = os.path.splitext(os.path.basename(content_img_path))[0]
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     print("Training Markov model...")
     chain.train(style_img)
     print("Generating markovified style...")
-    style_img_markov = chain.generate()
+    style_img_markov = chain.generate(width=64, height=64)
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     style_img_markov.save(os.path.join(THIS_FOLDER, style_img_markov_path))
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         "--content_images_paths",
         content_img_path,
         "--interpolation_weights",
-        "[0.5]",
+        "[0.35]",
         "--logtostderr",
     ])
     console_entry_point([
