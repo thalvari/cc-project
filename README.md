@@ -1,8 +1,6 @@
 # Group Picasso
 
 ### Installation for Ubuntu
-* ```curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash```
-* ```sudo apt-get install git-lfs```
 * ```git clone git@github.com:thalvari/cc-project.git```
 * ```cd cc-project```
 * ```python3 -m venv venv```

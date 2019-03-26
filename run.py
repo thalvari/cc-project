@@ -6,7 +6,7 @@ from urllib.request import urlretrieve
 
 from PIL import Image
 
-from libs.arbitrary_image_stylization.arbitrary_image_stylization_with_weights import console_entry_point
+from libs.arbitrary_image_stylization.arbitrary_image_stylization_with_weights import code_entry_point
 from libs.markov_img_gen.imggen import MarkovChain
 
 MODEL_URL = "https://storage.googleapis.com/download.magenta.tensorflow.org/models/arbitrary_style_transfer.tar.gz"
@@ -17,6 +17,8 @@ if __name__ == "__main__":
     model_folder = os.path.join(THIS_FOLDER, "pre-trained_models/arbitrary_style_transfer")
     model_download_folder = os.path.dirname(model_folder)
     model_download_path = os.path.join(model_download_folder, model_url_basename)
+    if not os.path.isdir(model_download_folder):
+        os.makedirs(model_download_folder)
     if not os.path.isdir(model_folder):
         print("Downloading pre-trained model...")
         urlretrieve(MODEL_URL, model_download_path)
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     style_img_markov.save(style_img_markov_path)
 
     print("Combining styles...")
-    console_entry_point([
+    code_entry_point([
         "arbitrary_image_stylization_with_weights",
         "--checkpoint",
         os.path.join(model_folder, "model.ckpt"),
@@ -57,7 +59,7 @@ if __name__ == "__main__":
         "[0.35]",
         "--logtostderr",
     ])
-    console_entry_point([
+    code_entry_point([
         "arbitrary_image_stylization_with_weights",
         "--checkpoint",
         os.path.join(model_folder, "model.ckpt"),
